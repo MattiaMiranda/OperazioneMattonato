@@ -12,13 +12,13 @@ const PATTERN = [
   "##.#.....##", // 0
   "##.#.#####.", // 1
   "##.#.###.#.", // 2
-  "#....###.#.", // 3
-  "####.......", // 4
+  ".....###.#.", // 3  ← PUTTANA parte da (3,0)
+  ".###.......", // 4
   ".....###.#.", // 5
-  "##.#.###.##", // 6
-  "##.#.######", // 7
-  "##.########", // 8
-  "##.########", // 9
+  ".#.#.###.##", // 6
+  ".#.#.######", // 7
+  ".#.########", // 8
+  ".#.########", // 9
   "##.########", // 10
 ];
 
@@ -45,6 +45,8 @@ const WORDS = [
     clue: "Il posto dove passeremo qualche ora a mollo invece di fare qualcosa di produttivo." },
   { answer: "REGALO",   dir: "down",   row: 5, col: 2,
     clue: "Quello che ricevi quando compi gli anni e chi ti sta attorno è abbastanza generoso." },
+  { answer: "PUTTANA",  dir: "down",   row: 3, col: 0,
+    clue: "Con chi hanno perso la verginità il Mattonato e il Machu Pichu?" },
 ];
 
 const TOTAL = WORDS.length;
@@ -93,21 +95,18 @@ function wordsAt(r, c) {
   });
 }
 
-// Numerazione standard: una casella prende il numero se apre una parola
+// Numerazione standard: ogni parola prende il numero sulla sua casella
+// iniziale, in ordine di lettura (così nessuna parola resta senza numero,
+// anche quando una nuova casella bianca "apre" la riga prima di essa).
 function buildNumbers() {
+  const starts = [];
+  WORDS.forEach((w) => {
+    const key = `${w.row},${w.col}`;
+    if (!starts.some((s) => s.key === key)) starts.push({ key, r: w.row, c: w.col });
+  });
+  starts.sort((a, b) => a.r - b.r || a.c - b.c);
   const numbers = new Map();
-  let n = 0;
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if (!isWhite(r, c)) continue;
-      const startsAcross = isWhite(r, c - 1) === false && isWhite(r, c + 1);
-      const startsDown = isWhite(r - 1, c) === false && isWhite(r + 1, c);
-      if (startsAcross || startsDown) {
-        n++;
-        numbers.set(`${r},${c}`, n);
-      }
-    }
-  }
+  starts.forEach((s, i) => numbers.set(s.key, i + 1));
   return numbers;
 }
 

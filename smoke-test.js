@@ -43,7 +43,7 @@ if (cells.length !== 121) fail("la griglia non è 11x11");
 const cluesAcross = doc.querySelectorAll("#cluesAcross .clue");
 const cluesDown = doc.querySelectorAll("#cluesDown .clue");
 console.log("definizioni:", cluesAcross.length + cluesDown.length, "(" + cluesAcross.length + " oriz + " + cluesDown.length + " vert)");
-if (cluesAcross.length + cluesDown.length !== 9) fail("attese 9 definizioni");
+if (cluesAcross.length + cluesDown.length !== 10) fail("attese 10 definizioni");
 
 const kb = doc.querySelectorAll(".kb-key");
 console.log("tasti tastiera:", kb.length);
@@ -54,7 +54,7 @@ if (!box || !box.tagName || box.tagName.toLowerCase() !== "details") fail("clues
 console.log("cluesBox open (desktop):", box && box.open);
 
 // nessuna definizione contiene una risposta come testo
-const soluzioni = ["NEVE", "BAGNO", "BUDAPEST", "RELAX", "AMICI", "CENA", "PISCINA", "TERME", "REGALO"];
+const soluzioni = ["NEVE", "BAGNO", "BUDAPEST", "RELAX", "AMICI", "CENA", "PISCINA", "TERME", "REGALO", "PUTTANA"];
 const defs = [...cluesAcross, ...cluesDown].map((li) => li.textContent.toUpperCase());
 for (const def of defs) {
   for (const s of soluzioni) {
