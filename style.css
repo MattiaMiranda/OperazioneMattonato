@@ -93,6 +93,19 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
   box-shadow: var(--shadow-lg);
 }
 
+/* logo: ritaglio circolare del viso con anello oro */
+.intro__logo {
+  display: block;
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: radial-gradient(circle at 50% 32%, #2a3a6e, #0f1830);
+  border: 3px solid var(--gold);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .42);
+}
+
 .intro__tag {
   display: inline-block;
   font-size: .7rem;
@@ -471,6 +484,18 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
   margin: 0 0 .8rem;
 }
 
+.ticket__avatar {
+  display: block;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: radial-gradient(circle at 50% 32%, #2a3a6e, #0f1830);
+  border: 3px solid var(--gold);
+  box-shadow: var(--shadow);
+}
+
 .ticket__title {
   font-size: clamp(1.4rem, 5vw, 2rem);
   letter-spacing: -.02em;
@@ -638,9 +663,10 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
 
   /* hero più corto e CTA a tutta larghezza */
   .intro {
-    padding: 3rem 1.1rem 2.7rem;
+    padding: 2.7rem 1.1rem 2.6rem;
     border-radius: 0 0 28px 28px;
   }
+  .intro__logo { width: 116px; height: 116px; margin-bottom: 1.2rem; }
   .intro__text { padding: 1.1rem 1.15rem; }
   .intro .btn--primary { width: 100%; max-width: 330px; }
 

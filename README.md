@@ -15,6 +15,7 @@ Apri `index.html` con qualsiasi browser, oppure visita il sito pubblicato su Git
 | `index.html` | struttura della pagina (intro, cruciverba, voucher finale) |
 | `style.css` | stile moderno, responsive e ottimizzato per il telefono |
 | `script.js` | griglia, selezione, controllo delle risposte, vittoria |
+| `images/` | logo tondo, favicon e icone (generate da `faccia.png` con `make-images.js`) |
 
 ## Regole
 

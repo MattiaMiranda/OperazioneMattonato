@@ -1,0 +1,5 @@
+# dipendenze (immagini generate con sharp)
+node_modules/
+
+# file di prova temporanei
+images/_*.png
