@@ -15,9 +15,22 @@ fs.mkdirSync(OUT, { recursive: true });
   const square = () =>
     sharp(trimmed.data).resize(512, 512, { fit: "cover", position: "attention" });
 
-  // 2) avatar per il sito (webp leggero, con trasparenza)
-  await square().webp({ quality: 86, alphaQuality: 90 }).toFile(path.join(OUT, "faccia.webp"));
-  console.log("faccia.webp:", fs.statSync(path.join(OUT, "faccia.webp")).size, "byte");
+  // 2) logo per il sito: l'intero viso ritagliato, sfondo trasparente (nessun cerchio)
+  const logo = await sharp(trimmed.data)
+    .resize({ width: 640 })
+    .webp({ quality: 86, alphaQuality: 90 })
+    .toBuffer({ resolveWithObject: true });
+  await fs.promises.writeFile(path.join(OUT, "faccia.webp"), logo.data);
+
+  const raw = await sharp(logo.data).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  let trasparenti = 0;
+  for (let i = 3; i < raw.data.length; i += raw.info.channels) if (raw.data[i] < 128) trasparenti++;
+  const tot = raw.info.width * raw.info.height;
+  console.log(
+    "faccia.webp:", logo.data.length, "byte,",
+    logo.info.width + "x" + logo.info.height + ",",
+    "trasparente " + ((100 * trasparenti) / tot).toFixed(1) + "%"
+  );
 
   // 3) icona per la barra del browser (sfondo blu notte, niente trasparenze)
   await sharp(trimmed.data)
