@@ -806,6 +806,20 @@ updateProgress();
 selectCell(firstWhite().r, firstWhite().c, { focus: false });
 setFeedback("Seleziona una casella e inizia a scrivere.", "info");
 
+// elenco definizioni: su telefono è chiuso di default (lo spazio serve alla
+// griglia), su schermi grandi resta aperto. Si sincronizza al cambio layout.
+const cluesBox = document.getElementById("cluesBox");
+if (cluesBox && typeof window.matchMedia === "function") {
+  const mqMobile = window.matchMedia("(max-width: 640px)");
+  const syncCluesBox = () => { cluesBox.open = !mqMobile.matches; };
+  syncCluesBox();
+  if (typeof mqMobile.addEventListener === "function") {
+    mqMobile.addEventListener("change", syncCluesBox);
+  } else if (typeof mqMobile.addListener === "function") {
+    mqMobile.addListener(syncCluesBox); // Safari ≤13
+  }
+}
+
 // verifica di sviluppo: incroci coerenti
 WORDS.forEach((w) => {
   wordCells(w).forEach((x) => {

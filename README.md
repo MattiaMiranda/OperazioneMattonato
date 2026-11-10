@@ -17,6 +17,11 @@ Apri `index.html` con qualsiasi browser, oppure visita il sito pubblicato su Git
 | `script.js` | griglia, selezione, controllo delle risposte, vittoria |
 | `images/` | logo tondo, favicon e icone (generate da `faccia.png` con `make-images.js`) |
 
+## Sviluppo
+
+- `node make-images.js` → rigenera logo e icone da `faccia.png` (serve `npm i sharp`)
+- `npm i jsdom --no-save && node smoke-test.js` → verifica griglia, definizioni, selezione e che nessuna definizione contenga una risposta
+
 ## Regole
 
 - Clicca una casella e scrivi (tastiera fisica o tastiera a schermo)

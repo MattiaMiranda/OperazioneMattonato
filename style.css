@@ -295,6 +295,14 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
   transition: background .15s ease, border-color .15s ease, transform .12s ease;
 }
 .cell:hover { transform: translateY(-1px); border-color: #d9d2c2; }
+.cell:active { transform: scale(.96); }
+
+/* lettera che "poppa" quando inserita */
+.cell__letter:not(:empty) { animation: letter-in .18s cubic-bezier(.2, .9, .3, 1.4); }
+@keyframes letter-in {
+  from { transform: scale(.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 
 /* dove non c'è una parola: nessun quadrato, solo spazio vuoto */
 .cell--black {
@@ -343,17 +351,43 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
 .cell--done { border-color: var(--ok); }
 .cell--selected.cell--done { border-color: var(--gold-deep); }
 
-/* ---------- definizioni ---------- */
-.clues { flex: 1 1 330px; max-width: 430px; min-width: 265px; }
-
-.clues__group {
+/* ---------- definizioni (card apribile) ---------- */
+.clues {
+  flex: 1 1 330px;
+  max-width: 430px;
+  min-width: 265px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 1.1rem 1.15rem;
-  margin-bottom: 1.1rem;
+  padding: 1.05rem 1.1rem;
 }
+
+.clues > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  color: var(--muted);
+  padding: .1rem .15rem .7rem;
+  transition: color .15s ease;
+}
+.clues > summary::-webkit-details-marker { display: none; }
+.clues > summary::after {
+  content: "▾";
+  font-size: .95rem;
+  transition: transform .2s ease;
+}
+.clues[open] > summary::after { transform: rotate(180deg); }
+.clues > summary:hover { color: var(--ink); }
+
+.clues__group { margin-bottom: 1.05rem; }
+.clues__group:last-child { margin-bottom: 0; }
 
 .clues__title {
   font-size: .72rem;
@@ -602,18 +636,18 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
 
 /* --------------------------- TELEFONO --------------------------- */
 @media (max-width: 640px) {
-  /* una sola colonna nell'ordine: gioco → griglia → definizione attiva
-     → tastiera → comandi → elenco definizioni */
+  /* una sola colonna nell'ordine: testa → stato → griglia → definizione
+     attiva → comandi → feedback → tastiera (fissa) → elenco definizioni */
   .game {
     display: flex;
     flex-direction: column;
-    gap: .95rem;
-    padding: 1.5rem .7rem calc(2.5rem + env(safe-area-inset-bottom));
+    gap: .85rem;
+    padding: 1.1rem .7rem calc(1.5rem + env(safe-area-inset-bottom));
   }
   .game > * { margin: 0; }
   .game__board { display: contents; }
 
-  .game__head { order: 1; }
+  .game__head { order: 1; margin-bottom: 0; }
   .status { order: 2; }
   .grid-wrap { order: 3; padding: .6rem; }
   .active-clue {
@@ -624,33 +658,58 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
     margin-top: 0;
     box-shadow: 0 10px 26px rgba(15, 24, 48, .28);
   }
-  .keyboard { order: 5; }
-  .controls { order: 6; }
-  .feedback { order: 7; }
+  .controls { order: 5; }
+  .feedback { order: 6; }
+  .keyboard { order: 7; }
   .clues { order: 8; flex: none; max-width: none; }
+
+  /* testa compatta: spazio alla griglia */
+  .game__title { font-size: 1.35rem; }
+  .game__hint { display: none; }
 
   /* la griglia entra per intero nello schermo: niente scorrimento laterale */
   .grid {
-    --cell: clamp(25px, calc((100vw - 92px) / 11), 46px);
+    --cell: clamp(25px, calc((100vw - 84px) / 11), 46px);
     gap: 4px;
   }
   .cell { font-size: calc(var(--cell, 38px) * .5); border-radius: 10px; }
   .cell__num { font-size: .5rem; top: 2px; left: 3px; }
 
-  /* tastiera comoda al pollice */
-  .kb-key { min-width: 2.5rem; height: 3rem; font-size: 1rem; border-radius: 12px; }
-  .kb-key--del { min-width: 3.2rem; }
+  /* tastiera fissa in basso: sempre sotto il pollice, a tutta larghezza */
+  .keyboard {
+    position: sticky;
+    bottom: 0;
+    z-index: 8;
+    margin: .3rem calc(-1 * .7rem) 0;
+    padding: .5rem .5rem calc(.5rem + env(safe-area-inset-bottom));
+    background: rgba(255, 253, 248, .93);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 26px rgba(15, 24, 48, .14);
+    max-width: none;
+    gap: .35rem;
+  }
+  .kb-key { min-width: 2.4rem; height: 2.9rem; font-size: 1rem; border-radius: 12px; }
+  .kb-key--del { min-width: 3.2rem; margin-left: .5rem; }
 
-  /* comandi a tutta larghezza, facili da premere */
-  .controls { flex-direction: column; gap: .6rem; }
-  .controls .btn { width: 100%; padding: 1.05em 1.5em; }
+  /* comandi in griglia: CONTROLLA a tutta larghezza, gli altri affiancati */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .55rem;
+    margin: .2rem 0 0;
+  }
+  .controls .btn { width: 100%; padding: 1em 1em; }
+  .controls .btn--check { grid-column: 1 / -1; }
 
   /* definizioni più leggibili e con area di tocco ampia */
-  .clue { padding: .75em .6em; font-size: .97rem; }
-  .clues__group { padding: 1rem .9rem; }
+  .clue { padding: .8em .6em; font-size: .97rem; }
+  .clues { padding: .5rem .8rem .9rem; }
+  .clues > summary { min-height: 44px; align-items: center; padding: 0 .15rem; }
 
   /* stato compatto */
-  .status { padding: .9rem 1rem 1rem; }
+  .status { padding: .9rem 1rem 1rem; margin-bottom: 0; }
   .status__row { flex-direction: column; gap: .15rem; margin-bottom: .6rem; }
 
   /* hero più corto e CTA a tutta larghezza */
@@ -667,6 +726,24 @@ h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; }
   .ticket__actions .btn { width: 100%; }
 
   .footer { padding-bottom: calc(1.6rem + env(safe-area-inset-bottom)); }
+}
+
+/* --------------------------- ORIZZONTALE --------------------------- */
+/* telefono girato di lato: niente testa, griglia più bassa per vedere
+   tutto (griglia + tastiera) senza scorrere */
+@media (orientation: landscape) and (max-height: 520px) {
+  .game__head, .game__hint { display: none; }
+  .game { padding-top: .7rem; gap: .5rem; }
+  .status { padding: .6rem .9rem .7rem; }
+  .status__row { flex-direction: row; margin-bottom: .4rem; }
+  .grid {
+    --cell: clamp(22px, calc((100vh - 210px) / 11), 34px);
+    gap: 3px;
+  }
+  .grid-wrap { padding: .45rem; }
+  .active-clue { padding: .55rem .9rem; font-size: .88rem; }
+  .keyboard { padding-top: .35rem; padding-bottom: calc(.35rem + env(safe-area-inset-bottom)); }
+  .kb-key { height: 2.4rem; min-width: 2.1rem; font-size: .9rem; }
 }
 
 /* ---------------------------------------------------------------------
