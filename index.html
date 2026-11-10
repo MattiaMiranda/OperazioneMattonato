@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Operazione Mattonato · Cruciverba di compleanno</title>
+  <meta name="description" content="Un cruciverba di compleanno da risolvere per scoprire il regalo segreto di Mattonato." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== TESTA / INTRODUZIONE ===================== -->
+  <header class="intro" id="intro">
+    <div class="intro__deco" aria-hidden="true">
+      <span class="stamp stamp--left">✈ BUD · 22</span>
+      <span class="stamp stamp--right">🎟 GIFT VOUCHER</span>
+    </div>
+
+    <p class="intro__tag">EDIZIONE COMPLEANNO · 22 ANNI</p>
+    <h1 class="intro__title">OPERAZIONE MATTONATO</h1>
+    <p class="intro__subtitle">Un enigma, un compleanno e un regalo da scoprire.</p>
+
+    <p class="intro__text">
+      Caro Mattonato, per i tuoi 22 anni abbiamo preparato qualcosa.
+      Ma prima dovrai dimostrare di avere almeno due neuroni funzionanti.
+      Completa il cruciverba e scopri cosa ti aspetta.
+      Buona fortuna: ne avrai bisogno.
+    </p>
+
+    <a class="btn btn--primary" href="#gioco" id="btnStart">INIZIA IL GIOCO</a>
+  </header>
+
+  <main>
+    <!-- ===================== SEZIONE GIOCO ===================== -->
+    <section class="game" id="gioco" aria-labelledby="gameTitle">
+      <div class="game__head">
+        <h2 id="gameTitle" class="game__title">Il Cruciverba</h2>
+        <p class="game__hint">Clicca una casella, scrivi le lettere. Clicca due volte per cambiare direzione.</p>
+      </div>
+
+      <!-- Barra di stato: avanzamento + messaggio ironico -->
+      <div class="status" role="status" aria-live="polite">
+        <div class="status__row">
+          <p class="status__progress" id="progress">0 / 9 parole completate</p>
+          <p class="status__msg" id="statusMsg">Dai Mattonato, anche un cruciverba ogni tanto!</p>
+        </div>
+        <div class="status__bar" aria-hidden="true"><span id="progressFill"></span></div>
+      </div>
+
+      <div class="game__board">
+        <!-- ===================== GRIGLIA ===================== -->
+        <div class="grid-wrap">
+          <div class="grid" id="grid" role="grid" aria-label="Griglia del cruciverba"></div>
+        </div>
+
+        <!-- ===================== DEFINIZIONI ===================== -->
+        <div class="clues">
+          <div class="clues__group">
+            <h3 class="clues__title">ORIZZONTALI</h3>
+            <ul class="clues__list" id="cluesAcross"></ul>
+          </div>
+          <div class="clues__group">
+            <h3 class="clues__title">VERTICALI</h3>
+            <ul class="clues__list" id="cluesDown"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Definizione della parola attiva: sempre visibile sul telefono -->
+      <div class="active-clue" id="activeClue" hidden aria-live="polite"></div>
+
+      <!-- ===================== COMANDI ===================== -->
+      <div class="keyboard" id="keyboard" aria-label="Tastiera delle lettere"></div>
+
+      <div class="controls">
+        <button type="button" class="btn btn--check" id="btnCheck">CONTROLLA</button>
+        <button type="button" class="btn btn--ghost" id="btnClear">CANCELLA</button>
+        <button type="button" class="btn btn--ghost" id="btnReset">RIGIOCA</button>
+      </div>
+
+      <!-- Feedback integrato (niente alert) -->
+      <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <!-- ===================== SCHERMATA VITTORIA ===================== -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <div class="ticket" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <p class="ticket__eyebrow">BOARDING PASS · GIFT EXPERIENCE</p>
+      <h2 class="ticket__title" id="winTitle">MISSIONE COMPLETATA!</h2>
+      <p class="ticket__name">MATTONATO</p>
+      <p class="ticket__line">PER I TUOI 22 ANNI HAI VINTO...</p>
+
+      <div class="ticket__voucher">
+        <span class="ticket__perforation" aria-hidden="true"></span>
+        <p class="ticket__gift">TERME + CENA<br />A BUDAPEST!</p>
+        <p class="ticket__meta">BOARDING · 22° COMPLEANNO &nbsp;|&nbsp; RELAX CLASS</p>
+      </div>
+
+      <p class="ticket__msg">
+        Dopo 22 anni di sacrifici, figuracce e decisioni discutibili,
+        abbiamo deciso di regalarti un po' di relax e una cena.
+        Le terme le paghiamo noi, le calorie sono affar tuo.
+      </p>
+      <p class="ticket__sign">CON AFFETTO, TIA · MARIO · ALDO · TROVA ❤️</p>
+
+      <div class="ticket__actions">
+        <button type="button" class="btn btn--primary" id="btnReplay">GIOCA DI NUOVO</button>
+        <button type="button" class="btn btn--ghost" id="btnClose">RIGUARDA IL REGALO</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Operazione Mattonato · Un regalo di Tia, Mario, Aldo e Trova.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
